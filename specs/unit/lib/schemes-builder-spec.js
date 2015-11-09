@@ -136,7 +136,6 @@ describe('schemesBuilder', function() {
                 validSchemes[0].scheme.should.eql('HMAC-256');
             });
 
-
             it('will fail if an invalid boolean value is provided for useTimestamp', function(done) {
 
                 var schemes = [
@@ -267,33 +266,33 @@ describe('schemesBuilder', function() {
                 ''
             ].forEach(function(key) {
 
-                    it('will fail if an invalid client password is defined', function(done) {
+                it('will fail if an invalid client password is defined', function(done) {
 
-                        var schemes = [
-                            {
-                                scheme: 'HMAC-256',
-                                useTimestamp: true,
-                                timestampValidationWindowInSeconds: 60,
-                                clients: [
-                                    {
-                                        clientId: 'ClientA',
-                                        password: key
-                                    }
-                                ]
-                            }
-                        ];
-
-                        try {
-                            schemesBuilder.build(schemes);
+                    var schemes = [
+                        {
+                            scheme: 'HMAC-256',
+                            useTimestamp: true,
+                            timestampValidationWindowInSeconds: 60,
+                            clients: [
+                                {
+                                    clientId: 'ClientA',
+                                    password: key
+                                }
+                            ]
                         }
-                        catch (err) {
-                            err.should.eql("password is invalid");
-                            done();
-                        };
+                    ];
 
-                    });
+                    try {
+                        schemesBuilder.build(schemes);
+                    }
+                    catch (err) {
+                        err.should.eql("password is invalid");
+                        done();
+                    };
 
                 });
+
+            });
 
         });
 

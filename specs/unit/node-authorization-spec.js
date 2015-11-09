@@ -48,6 +48,24 @@ describe('node-authorization', function() {
                             password: 'keyvalue'
                         }
                     ]
+                },
+                {
+                    scheme: 'HMAC-512',
+                    clients: [
+                        {
+                            clientId: 'clientidone',
+                            password: 'keyvalue'
+                        }
+                    ]
+                },
+                {
+                    scheme: 'MD5',
+                    clients: [
+                        {
+                            clientId: 'clientidone',
+                            password: 'keyvalue'
+                        }
+                    ]
                 }
             ];
 
@@ -67,6 +85,31 @@ describe('node-authorization', function() {
 
             header.should.eql('HMAC-256 clientId=clientidone;signature=94H1WX7hHA9qjzH/yv3AgwzvRNTdudFYBCZW5BQMdGI=');
         });
+
+        [
+            { scheme: 'HMAC-256', signature: 'bLlSjEAgkfFtuAlFwr/0sjx1rPGg7tq1P8KszS0zz+g=' },
+            { scheme: 'HMAC-512', signature: 'UaBRZz8cujFrtOxUqkRwOnu2RoYzVIpnndTga1MBCXPjQJgiiOMAkgi79HszsWtQXVFW/WHEzuemxvpIZqpW9Q==' },
+            { scheme: 'MD5', signature: 'XSObr65DnzrAMK5vbMiBGA==' }
+        ]
+            .forEach(function(testCase) {
+
+                it('generates a valid authorization header for scheme - ' + testCase.scheme, function() {
+
+                    var options = {
+                        schemeName: testCase.scheme,
+                        clientId: 'clientidone'
+                    };
+
+                    var postData = 'Some data';
+
+                    var header = nodeAuthorization.generateAuthorizationHeader(options, postData);
+
+                    header.should.eql(testCase.scheme + ' clientId=clientidone;signature=' + testCase.signature);
+                });
+
+            });
+
+
 
         it('generates a valid authorization header when providing data and a timestamp', function() {
 

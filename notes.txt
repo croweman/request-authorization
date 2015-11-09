@@ -11,6 +11,10 @@ schemes configured
 test the scheme-helper
 test the hmac scheme
 
+
+tests for each scheme
+
+
 helper functions to call to generate headers etc
 
 name=value;
@@ -18,6 +22,8 @@ name=value;
 https://developer.akamai.com/introduction/Client_Auth.html time stamp iso string
 
 timestamp=;
+
+test with all available schemes
 
 configurable threshold for time stamp, option to validate timestamp?
 
