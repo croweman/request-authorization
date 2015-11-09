@@ -15,7 +15,7 @@ describe('schemesBuilder', function() {
                     clients: [
                         {
                             clientId: 'clientidone',
-                            key: 'keyvalue'
+                            password: 'keyvalue'
                         }
                     ]
                 }
@@ -30,7 +30,7 @@ describe('schemesBuilder', function() {
             validSchemes[0].timestampValidationWindowInSeconds.should.eql(60);
             validSchemes[0].clients.length.should.eql(1);
             validSchemes[0].clients[0].clientId.should.eql('clientidone');
-            validSchemes[0].clients[0].key.should.eql('keyvalue');
+            validSchemes[0].clients[0].password.should.eql('keyvalue');
 
         });
 
@@ -107,7 +107,7 @@ describe('schemesBuilder', function() {
                         clients: [
                             {
                                 clientId: 'clientidone',
-                                key: 'keyvalue'
+                                password: 'keyvalue'
                             }
                         ]
                     }
@@ -125,7 +125,7 @@ describe('schemesBuilder', function() {
                         clients: [
                             {
                                 clientId: 'clientidone',
-                                key: 'keyvalue'
+                                password: 'keyvalue'
                             }
                         ]
                     }
@@ -147,7 +147,7 @@ describe('schemesBuilder', function() {
                         clients: [
                             {
                                 clientId: 'clientidone',
-                                key: 'keyvalue'
+                                password: 'keyvalue'
                             }
                         ]
                     }
@@ -172,7 +172,7 @@ describe('schemesBuilder', function() {
                         clients: [
                             {
                                 clientId: 'clientidone',
-                                key: 'keyvalue'
+                                password: 'keyvalue'
                             }
                         ]
                     }
@@ -243,7 +243,7 @@ describe('schemesBuilder', function() {
                             clients: [
                                 {
                                     clientId: clientId,
-                                    key: 'keyvalue'
+                                    password: 'keyvalue'
                                 }
                             ]
                         }
@@ -267,7 +267,7 @@ describe('schemesBuilder', function() {
                 ''
             ].forEach(function(key) {
 
-                    it('will fail if an invalid client key is defined', function(done) {
+                    it('will fail if an invalid client password is defined', function(done) {
 
                         var schemes = [
                             {
@@ -277,7 +277,7 @@ describe('schemesBuilder', function() {
                                 clients: [
                                     {
                                         clientId: 'ClientA',
-                                        key: key
+                                        password: key
                                     }
                                 ]
                             }
@@ -287,7 +287,7 @@ describe('schemesBuilder', function() {
                             schemesBuilder.build(schemes);
                         }
                         catch (err) {
-                            err.should.eql("key is invalid");
+                            err.should.eql("password is invalid");
                             done();
                         };
 

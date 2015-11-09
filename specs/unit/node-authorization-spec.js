@@ -17,7 +17,7 @@ describe('node-authorization', function() {
                     clients: [
                         {
                             clientId: 'clientidone',
-                            key: 'keyvalue'
+                            password: 'keyvalue'
                         }
                     ]
                 }
@@ -29,7 +29,7 @@ describe('node-authorization', function() {
 
             nodeAuthorization.authorizationSchemes[0].scheme.should.eql('HMAC-256');
             nodeAuthorization.authorizationSchemes[0].clients[0].clientId.should.eql('clientidone');
-            nodeAuthorization.authorizationSchemes[0].clients[0].key.should.eql('keyvalue');
+            nodeAuthorization.authorizationSchemes[0].clients[0].password.should.eql('keyvalue');
 
         });
 
@@ -45,7 +45,7 @@ describe('node-authorization', function() {
                     clients: [
                         {
                             clientId: 'clientidone',
-                            key: 'keyvalue'
+                            password: 'keyvalue'
                         }
                     ]
                 }
@@ -77,7 +77,7 @@ describe('node-authorization', function() {
                     clients: [
                         {
                             clientId: 'clientidone',
-                            key: 'keyvalue'
+                            password: 'keyvalue'
                         }
                     ]
                 }
@@ -106,7 +106,7 @@ describe('node-authorization', function() {
                     clients: [
                         {
                             clientId: 'clientidone',
-                            key: 'keyvalue'
+                            password: 'keyvalue'
                         }
                     ]
                 }
@@ -177,7 +177,7 @@ describe('node-authorization', function() {
                     clients: [
                         {
                             clientId: 'clientidone',
-                            key: 'keyvalue'
+                            password: 'keyvalue'
                         }
                     ]
                 }
@@ -206,7 +206,7 @@ describe('node-authorization', function() {
                     clients: [
                         {
                             clientId: 'clientidone',
-                            key: 'keyvalue'
+                            password: 'keyvalue'
                         }
                     ]
                 }
@@ -231,7 +231,7 @@ describe('node-authorization', function() {
                     clients: [
                         {
                             clientId: 'clientidone',
-                            key: 'keyvalue'
+                            password: 'keyvalue'
                         }
                     ]
                 }
@@ -267,7 +267,7 @@ describe('node-authorization', function() {
                     clients: [
                         {
                             clientId: 'clientidone',
-                            key: 'keyvalue'
+                            password: 'keyvalue'
                         }
                     ]
                 }
@@ -338,7 +338,7 @@ describe('node-authorization', function() {
                     clients: [
                         {
                             clientId: 'clientidone',
-                            key: 'keyvalue'
+                            password: 'keyvalue'
                         }
                     ]
                 }
