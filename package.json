@@ -1,0 +1,19 @@
+{
+  "name": "request-authorization",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/.bin/istanbul test ./node_modules/mocha/bin/_mocha -- specs -R spec --recursive --timeout 1000"
+  },
+  "dependencies": {
+
+  },
+  "devDependencies": {
+    "istanbul": "^0.3.2",
+    "mocha": "^2.0.1",
+    "should": "^4.3.0"
+  },
+  "author": "Lee Crowe",
+  "license": "ISC"
+}
