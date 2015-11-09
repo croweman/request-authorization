@@ -1,55 +1,6 @@
 
-rename from key to password everywhere
-
-require("crypto").createHmac("md5", "password")
-
-
-function to generate header stuff
-
-schemes configured
-
-test the scheme-helper
-test the hmac scheme
-
-
-tests for each scheme
-
-
-helper functions to call to generate headers etc
-
-name=value;
 
 https://developer.akamai.com/introduction/Client_Auth.html time stamp iso string
-
-timestamp=;
-
-test with all available schemes
-
-configurable threshold for time stamp, option to validate timestamp?
-
-what about tabs formatting etc in post body????
-
-initialize functions with schemes and keys
-
-must validate that there is a valid timestamp field (iso string)
-
-rather than having hasher, should have seperate scheme objects?
-
-make sure hash etc is being tested properly?? as there is validation in there
-
-refactor refactor refractor
-
-can i use base class rather than scheme helper? check the geocoding thingy
-
-
-Scheme -helper tests
-
-return more complex object from isAuthorised
-
-{
- isAuthorized: true/false
- error:
-}
 
 this or global
 
@@ -58,10 +9,6 @@ need to test calling init in app and then using it, not in a test use as actual 
 hmac 512 and some others?
 
 commit, then refactor etc
-
-don't load in all schemes if not needed!
-scheme validation can be somewhere else and not in each scheme, only hash required in scheme?
-
 
  Authorization:EG1-HMAC-SHA256 client_token=akaa-xxxxxxxxxxxxxxxx-xxxxxxxxxxxxxxxx;
  access_token=akaa-xxxxxxxxxxxxxx-xxxxxxxxxxxxxx;timestamp=20130817T02:49:13+0000;
