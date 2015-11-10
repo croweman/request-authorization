@@ -3,6 +3,37 @@ var should = require('should');
 
 describe('node-authorization', function() {
 
+    it('Correctly caches schemes', function() {
+
+        var schemes = [
+            {
+                scheme: 'HMAC-256',
+                useTimestamp: true,
+                clients: [
+                    {
+                        clientId: 'clientidone',
+                        password: 'keyvalue'
+                    }
+                ]
+            }
+        ];
+
+        nodeAuthorization.init(schemes);
+
+
+        for (var i = 0; i < 10; i++) {
+
+            nodeAuthorization = require('../../index');
+
+            var data = "{ firstName: 'john' }";
+            var authorizationHeader = 'HMAC-256 clientId=clientidone;timestamp=2015-11-05T12:12:35.675Z;signature=8+OIZQiZBqdBx5CGzVyMMfNhXPbhz2szJX2WqWrun5U=';
+
+            var result = nodeAuthorization.isAuthorized(authorizationHeader, data);
+
+            result.isAuthorized.should.eql(true);
+        }
+    })
+
     describe('init', function() {
 
         beforeEach(function() {
