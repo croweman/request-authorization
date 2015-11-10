@@ -1,7 +1,7 @@
-var nodeAuthorization = require('../../index');
+var requestAuthorization = require('../../index');
 var should = require('should');
 
-describe('node-authorization', function() {
+describe('request-authorization', function() {
 
     it('Correctly caches schemes', function() {
 
@@ -18,7 +18,7 @@ describe('node-authorization', function() {
             }
         ];
 
-        nodeAuthorization.init(schemes);
+        requestAuthorization.init(schemes);
 
 
         for (var i = 0; i < 10; i++) {
@@ -32,12 +32,12 @@ describe('node-authorization', function() {
 
             result.isAuthorized.should.eql(true);
         }
-    })
+    });
 
     describe('init', function() {
 
         beforeEach(function() {
-            nodeAuthorization.authorizationSchemes = [];
+            requestAuthorization.authorizationSchemes = [];
         });
 
         it('correctly processes encryption data', function() {
@@ -54,13 +54,13 @@ describe('node-authorization', function() {
                 }
             ];
 
-            nodeAuthorization.init(schemes);
+            requestAuthorization.init(schemes);
 
-            nodeAuthorization.authorizationSchemes.length.should.eql(1);
+            requestAuthorization.authorizationSchemes.length.should.eql(1);
 
-            nodeAuthorization.authorizationSchemes[0].scheme.should.eql('HMAC-256');
-            nodeAuthorization.authorizationSchemes[0].clients[0].clientId.should.eql('clientidone');
-            nodeAuthorization.authorizationSchemes[0].clients[0].password.should.eql('keyvalue');
+            requestAuthorization.authorizationSchemes[0].scheme.should.eql('HMAC-256');
+            requestAuthorization.authorizationSchemes[0].clients[0].clientId.should.eql('clientidone');
+            requestAuthorization.authorizationSchemes[0].clients[0].password.should.eql('keyvalue');
 
         });
 
@@ -100,7 +100,7 @@ describe('node-authorization', function() {
                 }
             ];
 
-            nodeAuthorization.init(schemes);
+            requestAuthorization.init(schemes);
         });
 
         it('generates a valid authorization header when not providing any data', function() {
@@ -112,7 +112,7 @@ describe('node-authorization', function() {
 
             var postData = undefined;
 
-            var header = nodeAuthorization.generateAuthorizationHeader(options, postData);
+            var header = requestAuthorization.generateAuthorizationHeader(options, postData);
 
             header.should.eql('HMAC-256 clientId=clientidone;signature=94H1WX7hHA9qjzH/yv3AgwzvRNTdudFYBCZW5BQMdGI=');
         });
@@ -133,7 +133,7 @@ describe('node-authorization', function() {
 
                     var postData = 'Some data';
 
-                    var header = nodeAuthorization.generateAuthorizationHeader(options, postData);
+                    var header = requestAuthorization.generateAuthorizationHeader(options, postData);
 
                     header.should.eql(testCase.scheme + ' clientId=clientidone;signature=' + testCase.signature);
                 });
@@ -157,7 +157,7 @@ describe('node-authorization', function() {
                 }
             ];
 
-            nodeAuthorization.init(schemes);
+            requestAuthorization.init(schemes);
 
             var options = {
                 schemeName: 'HMAC-256',
@@ -166,7 +166,7 @@ describe('node-authorization', function() {
 
             var postData = "{ firstName: 'john' }";
 
-            var header = nodeAuthorization.generateAuthorizationHeader(options, postData, new Date('2015-11-05T12:12:35.675Z'));
+            var header = requestAuthorization.generateAuthorizationHeader(options, postData, new Date('2015-11-05T12:12:35.675Z'));
 
             header.should.eql('HMAC-256 clientId=clientidone;timestamp=2015-11-05T12:12:35.675Z;signature=8+OIZQiZBqdBx5CGzVyMMfNhXPbhz2szJX2WqWrun5U=');
         });
@@ -186,7 +186,7 @@ describe('node-authorization', function() {
                 }
             ];
 
-            nodeAuthorization.init(schemes);
+            requestAuthorization.init(schemes);
 
             var options = {
                 schemeName: 'HMAC-256',
@@ -195,7 +195,7 @@ describe('node-authorization', function() {
 
             var postData = "{ firstName: 'john' }";
 
-            var header = nodeAuthorization.generateAuthorizationHeader(options, postData, new Date('2015-11-05T12:12:35.675Z'));
+            var header = requestAuthorization.generateAuthorizationHeader(options, postData, new Date('2015-11-05T12:12:35.675Z'));
 
             header.should.eql('HMAC-256 clientId=clientidone;signature=aizIhTj0/DYFzlYRPi7kD9A+2ArYlis2lFR3tobCqUw=');
         });
@@ -210,7 +210,7 @@ describe('node-authorization', function() {
             var postData = "{ firstName: 'john' }";
 
             try {
-                nodeAuthorization.generateAuthorizationHeader(options, postData, new Date('2015-11-05T12:12:35.675Z'));
+                requestAuthorization.generateAuthorizationHeader(options, postData, new Date('2015-11-05T12:12:35.675Z'));
             }
             catch(ex) {
                 ex.should.eql('schemeName is not valid');
@@ -229,7 +229,7 @@ describe('node-authorization', function() {
             var postData = "{ firstName: 'john' }";
 
             try {
-                nodeAuthorization.generateAuthorizationHeader(options, postData, new Date('2015-11-05T12:12:35.675Z'));
+                requestAuthorization.generateAuthorizationHeader(options, postData, new Date('2015-11-05T12:12:35.675Z'));
             }
             catch(ex) {
                 ex.should.eql('clientId is not valid');
@@ -257,7 +257,7 @@ describe('node-authorization', function() {
                 }
             ];
 
-            nodeAuthorization.init(schemes);
+            requestAuthorization.init(schemes);
         });
 
         it('returns true when header is valid and useTimestamp is enabled', function() {
@@ -265,7 +265,7 @@ describe('node-authorization', function() {
             var data = "{ firstName: 'john' }";
             var authorizationHeader = 'HMAC-256 clientId=clientidone;timestamp=2015-11-05T12:12:35.675Z;signature=8+OIZQiZBqdBx5CGzVyMMfNhXPbhz2szJX2WqWrun5U=';
 
-            var result = nodeAuthorization.isAuthorized(authorizationHeader, data);
+            var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
             result.isAuthorized.should.eql(true);
         });
@@ -286,12 +286,12 @@ describe('node-authorization', function() {
                 }
             ];
 
-            nodeAuthorization.init(schemes);
+            requestAuthorization.init(schemes);
 
             var data = "{ firstName: 'john' }";
             var authorizationHeader = 'HMAC-256 clientId=clientidone;timestamp=2015-11-05T12:12:35.675Z;signature=8+OIZQiZBqdBx5CGzVyMMfNhXPbhz2szJX2WqWrun5U=';
 
-            var result = nodeAuthorization.isAuthorized(authorizationHeader, data, new Date('2015-11-05T12:12:37.675Z'));
+            var result = requestAuthorization.isAuthorized(authorizationHeader, data, new Date('2015-11-05T12:12:37.675Z'));
 
             result.isAuthorized.should.eql(true);
         });
@@ -311,12 +311,12 @@ describe('node-authorization', function() {
                 }
             ];
 
-            nodeAuthorization.init(schemes);
+            requestAuthorization.init(schemes);
 
             var data = "{ firstName: 'john' }";
             var authorizationHeader = 'HMAC-256 clientId=clientidone;signature=aizIhTj0/DYFzlYRPi7kD9A+2ArYlis2lFR3tobCqUw=';
 
-            var result = nodeAuthorization.isAuthorized(authorizationHeader, data);
+            var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
             result.isAuthorized.should.eql(true);
         });
@@ -326,7 +326,7 @@ describe('node-authorization', function() {
             var data = "{ firstName: 'john' }";
             var authorizationHeader = 'HMAC-258 clientId=clientidone;timestamp=2015-11-05T12:12:35.675Z;signature=8+OIZQiZBqdBx5CGzVyMMfNhXPbhz2szJX2WqWrun5U=';
 
-            var result = nodeAuthorization.isAuthorized(authorizationHeader, data);
+            var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
             result.isAuthorized.should.eql(false)
             result.error.should.eql('schemeName is not valid');
@@ -347,12 +347,12 @@ describe('node-authorization', function() {
                 }
             ];
 
-            nodeAuthorization.init(schemes);
+            requestAuthorization.init(schemes);
 
             var data = "{ firstName: 'john' }";
             var authorizationHeader = 'HMAC-256 clientId=clientidtwo;timestamp=2015-11-05T12:12:35.675Z;signature=8+OIZQiZBqdBx5CGzVyMMfNhXPbhz2szJX2WqWrun5U=';
 
-            var result = nodeAuthorization.isAuthorized(authorizationHeader, data);
+            var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
             result.isAuthorized.should.eql(false)
             result.error.should.eql('clientId is not valid');
@@ -363,7 +363,7 @@ describe('node-authorization', function() {
             var data = "{ firstName: 'john' }";
             var authorizationHeader = 'HMAC-256 clientId=clientidone;timestamp=2015-11-05T12:12:35.675Z';
 
-            var result = nodeAuthorization.isAuthorized(authorizationHeader, data);
+            var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
             result.isAuthorized.should.eql(false)
             result.error.should.eql('signature is invalid');
@@ -374,7 +374,7 @@ describe('node-authorization', function() {
             var data = "{ firstName: 'john' }";
             var authorizationHeader = 'HMAC-256 clientId=clientidone;timestamp=2015-11-05T12:12:35.675Z;signature=8+OIZQiZBqdBx5CGzVyMMfNhXPbhz2szJX2WqWrun5UA=';
 
-            var result = nodeAuthorization.isAuthorized(authorizationHeader, data);
+            var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
             result.isAuthorized.should.eql(false)
             result.error.should.eql('Signatures do not match');
@@ -385,7 +385,7 @@ describe('node-authorization', function() {
             var data = "{ firstName: 'john' }";
             var authorizationHeader = 'HMAC-256 clientId=clientidone;signature=8+OIZQiZBqdBx5CGzVyMMfNhXPbhz2szJX2WqWrun5U=';
 
-            var result = nodeAuthorization.isAuthorized(authorizationHeader, data);
+            var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
             result.isAuthorized.should.eql(false)
             result.error.should.eql('timestamp is required');
@@ -396,7 +396,7 @@ describe('node-authorization', function() {
             var data = "{ firstName: 'john' }";
             var authorizationHeader = 'HMAC-256 clientId=clientidone;timestamp=asdf;signature=8+OIZQiZBqdBx5CGzVyMMfNhXPbhz2szJX2WqWrun5U=';
 
-            var result = nodeAuthorization.isAuthorized(authorizationHeader, data);
+            var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
             result.isAuthorized.should.eql(false)
             result.error.should.eql('timestamp is invalid');
@@ -418,17 +418,109 @@ describe('node-authorization', function() {
                 }
             ];
 
-            nodeAuthorization.init(schemes);
+            requestAuthorization.init(schemes);
 
             var data = "{ firstName: 'john' }";
             var authorizationHeader = 'HMAC-256 clientId=clientidone;timestamp=2015-11-05T12:12:35.675Z;signature=8+OIZQiZBqdBx5CGzVyMMfNhXPbhz2szJX2WqWrun5U=';
 
-            var result = nodeAuthorization.isAuthorized(authorizationHeader, data, new Date('2015-11-05T12:12:46.675Z'));
+            var result = requestAuthorization.isAuthorized(authorizationHeader, data, new Date('2015-11-05T12:12:46.675Z'));
 
             result.isAuthorized.should.eql(false);
             result.error.should.eql('validation window has been breached');
         });
 
+
+    });
+
+    describe('isAuthorizedMiddleware', function() {
+
+        beforeEach(function() {
+
+            var schemes = [
+                {
+                    scheme: 'HMAC-256',
+                    useTimestamp: true,
+                    clients: [
+                        {
+                            clientId: 'clientidone',
+                            password: 'keyvalue'
+                        }
+                    ]
+                }
+            ];
+
+            requestAuthorization.init(schemes);
+        });
+
+        it('should call the callback if user is authorized', function(done) {
+
+            function getDataFunc(req) {
+
+                return req.params.id + JSON.stringify(req.body);
+            }
+
+            var callback = function() {
+                done();
+            }
+
+            var req = {
+                headers: [],
+                params: {
+                    id: '123456'
+                },
+                body: {
+                firstName: 'joe'
+                }
+            };
+            req.headers['authorization'] = 'HMAC-256 clientId=clientidone;timestamp=2015-11-05T12:12:35.675Z;signature=Kk8HHaCG2hGCV+u6uk37qpIoC7GPuuu1we6xOsh7VvQ=';
+
+            requestAuthorization.isAuthorizedMiddleware(getDataFunc)(req, undefined, callback);
+
+        });
+
+        it('should send a 401 error response is the user is not authorized', function(done) {
+
+            function getDataFunc(req) {
+
+                return req.params.id + JSON.stringify(req.body);
+            }
+
+            var callback = function() {
+                done('should not have called the callback');
+            }
+
+            var req = {
+                headers: [],
+                params: {
+                    id: '123456'
+                },
+                body: {
+                    firstName: 'joe'
+                }
+            };
+
+            req.headers['authorization'] = 'HMAC-256-Invalid clientId=clientidone;timestamp=2015-11-05T12:12:35.675Z;signature=Kk8HHaCG2hGCV+u6uk37qpIoC7GPuuu1we6xOsh7VvQ=';
+
+            var status;
+            var endCalled;
+
+            var res = {
+                status: function(statusCode) {
+                    status = statusCode;
+                    return {
+                        end: function() {
+                            endCalled = true;
+                        }
+                    }
+                }
+            }
+
+            requestAuthorization.isAuthorizedMiddleware(getDataFunc)(req, res, callback);
+
+            status.should.eql(401)
+            endCalled.should.be.true;
+            done();
+        });
 
     });
 

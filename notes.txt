@@ -2,12 +2,6 @@
 
 https://developer.akamai.com/introduction/Client_Auth.html time stamp iso string
 
-this or global
-
-need to test calling init in app and then using it, not in a test use as actual module in an app
-
-hmac 512 and some others?
-
 commit, then refactor etc
 
 maybe an example express middle ware????
