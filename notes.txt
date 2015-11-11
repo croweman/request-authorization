@@ -1,8 +1,0 @@
-
-
-Populate readme
-
-add all schemes, examples of middleware everything, what header may lok like and different options
-
-
-explain timestamp etc, various clients
