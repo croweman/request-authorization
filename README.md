@@ -6,7 +6,7 @@ Node module for signing and authorizing requests.
 
 ## Usage
 
-Firstly the module will need to be initialized with schemes and there associated clients.
+Firstly the module will need to be initialized with schemes and there associated clients.  This only needs to be done once preferably on application start.
 
 ```js
 
@@ -108,11 +108,29 @@ var headerExapmle = 'HMAC-SHA256 clientId=clientOne;timestamp=2015-11-11T13:41:0
 var isoFormatDate = new Date().toISOString();
 ```
 
-
 ### timestampValidationWindowInSeconds
 
-## Mention available schemes use timestamp, and the window
+If useTimestamp is defined and the timestampValidationWindowInSeconds is defined then the difference between the timestamp and the server dateTime will be checked and if it is outside of the configured window the request would not be authorized.
 
+```js
+var requestAuthorization = require('request-authorization');
+
+var schemes = [
+    {
+        scheme: 'HMAC-SHA256',
+        useTimestamp: true,
+        timestampValidationWindowInSeconds: 60,
+        clients: [
+            {
+                clientId: 'clientOne',
+                password: 'p455w0rd'
+            }
+        ]
+    }
+];
+
+requestAuthorization.init(schemes);
+```
 
 ## Installation
 
