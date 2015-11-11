@@ -98,7 +98,16 @@ The schemes currently available are:
 - HMAC-SHA512
 - HMAC-MD5
 
-### useTimestamp option
+### useTimestamp
+
+If the userTimestamp option is defined and set to true the iso string date format will be used in the signature and header.
+
+```js
+var headerExapmle = 'HMAC-SHA256 clientId=clientOne;timestamp=2015-11-11T13:41:09.430Z;signature=cCqTvX6CZDv1N00QUP1lsvzSO6SFawQHz1bTHCeBnyA='
+
+var isoFormatDate = new Date().toISOString();
+```
+
 
 ### timestampValidationWindowInSeconds
 
