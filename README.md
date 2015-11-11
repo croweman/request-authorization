@@ -34,6 +34,7 @@ requestAuthorization.init(schemes);
 The generateAuthorizationHeader function can be used to generate authorization headers.  The function accepts an options argument and data as a string to be used for the signature.
 
 ```js
+var requestAuthorization = require('request-authorization');
 
 var options = {
     schemeName: 'HMAC-SHA256',
@@ -55,6 +56,8 @@ HMAC-SHA256 clientId=clientOne;timestamp=2015-11-11T13:41:09.430Z;signature=cCqT
 The isAuthorized function can be used to authorize a request.  The function accepts the 'authorization' header and request data as a string.
 
 ```js
+var requestAuthorization = require('request-authorization');
+
 var data = "{ firstName: 'john' }";
 var authorizationHeader = 'HMAC-SHA256 clientId=clientOne;timestamp=2015-11-05T12:12:35.675Z;signature=8+OIZQiZBqdBx5CGzVyMMfNhXPbhz2szJX2WqWrun5U=';
 
@@ -67,7 +70,23 @@ else {
     console.log('Denied');
 }
 ```
+## authorization
 
+Express authorization middleware is available and can be used in the following way.
+
+```js
+var requestAuthorization = require('request-authorization');
+var express = require('express');
+var router = express.Router();
+
+router.get('/', requestAuthorization.authorized(getData), function(req, res) {
+	res.status(200).send('You got in');
+});
+
+function getData(req) {
+    return req.params.id + JSON.stringify(req.body);
+}
+```
 
 ## Mention available schemes use timestamp, and the window
 
