@@ -1,6 +1,10 @@
 {
   "name": "request-authorization",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/croweman/request-authorization.git"
+  },
   "description": "Node module for signing and authorizing requests",
   "main": "index.js",
   "scripts": {
