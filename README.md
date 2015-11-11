@@ -31,7 +31,7 @@ requestAuthorization.init(schemes);
 
 ## Generate authororization header
 
-The generateAuthorizationHeader function can be used to generate authorization headers.
+The generateAuthorizationHeader function can be used to generate authorization headers.  The function accepts an options argument and data as a string to be used for the signature.
 
 ```js
 
@@ -52,7 +52,7 @@ HMAC-SHA256 clientId=clientOne;timestamp=2015-11-11T13:41:09.430Z;signature=cCqT
 
 ## isAuthorized
 
-The isAuthorized function can be used to authorized a request.
+The isAuthorized function can be used to authorize a request.  The function accepts the 'authorization' header and request data as a string.
 
 ```js
 var data = "{ firstName: 'john' }";
