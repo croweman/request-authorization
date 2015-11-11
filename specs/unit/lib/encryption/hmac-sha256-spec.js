@@ -1,5 +1,5 @@
 require('should');
-var encryptor = require('../../../../lib/encryption/hmac-256');
+var encryptor = require('../../../../lib/encryption/hmac-sha256');
 
 describe('HMAC-256 lib', function() {
 

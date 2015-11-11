@@ -9,7 +9,7 @@ describe('schemesBuilder', function() {
 
             var schemes = [
                 {
-                    scheme: 'HMAC-256',
+                    scheme: 'HMAC-SHA256',
                     useTimestamp: true,
                     timestampValidationWindowInSeconds: 60,
                     clients: [
@@ -25,7 +25,7 @@ describe('schemesBuilder', function() {
 
             validSchemes.length.should.eql(1);
 
-            validSchemes[0].scheme.should.eql('HMAC-256');
+            validSchemes[0].scheme.should.eql('HMAC-SHA256');
             validSchemes[0].useTimestamp.should.eql(true);
             validSchemes[0].timestampValidationWindowInSeconds.should.eql(60);
             validSchemes[0].clients.length.should.eql(1);
@@ -95,13 +95,13 @@ describe('schemesBuilder', function() {
 
             });
 
-        describe('HMAC-256 scheme', function() {
+        describe('HMAC-SHA256 scheme', function() {
 
             it('will be created if data is valid', function() {
 
                 var schemes = [
                     {
-                        scheme: 'HMAC-256',
+                        scheme: 'HMAC-SHA256',
                         useTimestamp: true,
                         timestampValidationWindowInSeconds: 60,
                         clients: [
@@ -115,13 +115,13 @@ describe('schemesBuilder', function() {
 
                 var validSchemes = schemesBuilder.build(schemes);
 
-                validSchemes[0].scheme.should.eql('HMAC-256');
+                validSchemes[0].scheme.should.eql('HMAC-SHA256');
             });
 
             it('will be created if useTimestamp is not defined', function() {
                 var schemes = [
                     {
-                        scheme: 'HMAC-256',
+                        scheme: 'HMAC-SHA256',
                         clients: [
                             {
                                 clientId: 'clientidone',
@@ -133,14 +133,14 @@ describe('schemesBuilder', function() {
 
                 var validSchemes = schemesBuilder.build(schemes);
 
-                validSchemes[0].scheme.should.eql('HMAC-256');
+                validSchemes[0].scheme.should.eql('HMAC-SHA256');
             });
 
             it('will fail if an invalid boolean value is provided for useTimestamp', function(done) {
 
                 var schemes = [
                     {
-                        scheme: 'HMAC-256',
+                        scheme: 'HMAC-SHA256',
                         useTimestamp: 'asdf',
                         timestampValidationWindowInSeconds: 'adsf',
                         clients: [
@@ -165,7 +165,7 @@ describe('schemesBuilder', function() {
 
                 var schemes = [
                     {
-                        scheme: 'HMAC-256',
+                        scheme: 'HMAC-SHA256',
                         useTimestamp: true,
                         timestampValidationWindowInSeconds:'asdf',
                         clients: [
@@ -191,7 +191,7 @@ describe('schemesBuilder', function() {
 
                 var schemes = [
                     {
-                        scheme: 'HMAC-256',
+                        scheme: 'HMAC-SHA256',
                         useTimestamp: true,
                         timestampValidationWindowInSeconds: 60,
                     }
@@ -201,7 +201,7 @@ describe('schemesBuilder', function() {
                     schemesBuilder.build(schemes);
                 }
                 catch (err) {
-                    err.should.eql("clients must be defined for scheme 'HMAC-256'");
+                    err.should.eql("clients must be defined for scheme 'HMAC-SHA256'");
                     done();
                 };
             });
@@ -210,7 +210,7 @@ describe('schemesBuilder', function() {
 
                 var schemes = [
                     {
-                        scheme: 'HMAC-256',
+                        scheme: 'HMAC-SHA256',
                         useTimestamp: true,
                         timestampValidationWindowInSeconds:60,
                         clients: []
@@ -221,7 +221,7 @@ describe('schemesBuilder', function() {
                     schemesBuilder.build(schemes);
                 }
                 catch (err) {
-                    err.should.eql("clients must be defined for scheme 'HMAC-256'");
+                    err.should.eql("clients must be defined for scheme 'HMAC-SHA256'");
                     done();
                 };
             });
@@ -236,7 +236,7 @@ describe('schemesBuilder', function() {
 
                     var schemes = [
                         {
-                            scheme: 'HMAC-256',
+                            scheme: 'HMAC-SHA256',
                             useTimestamp: true,
                             timestampValidationWindowInSeconds: 60,
                             clients: [
@@ -270,7 +270,7 @@ describe('schemesBuilder', function() {
 
                     var schemes = [
                         {
-                            scheme: 'HMAC-256',
+                            scheme: 'HMAC-SHA256',
                             useTimestamp: true,
                             timestampValidationWindowInSeconds: 60,
                             clients: [

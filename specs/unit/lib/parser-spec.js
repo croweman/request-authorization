@@ -7,12 +7,12 @@ describe('parser', function() {
 
         it('correctly parses an authorization header into an object', function() {
 
-            var header = 'HMAC-256 clientId=ClientA;timestamp=2015-11-05T08:30:24.195Z;signature=thesignature';
+            var header = 'HMAC-SHA256 clientId=ClientA;timestamp=2015-11-05T08:30:24.195Z;signature=thesignature';
 
             var obj = parser.parseAuthorizationHeader(header);
 
             Object.keys(obj).length.should.eql(4);
-            obj.scheme.should.eql('HMAC-256');
+            obj.scheme.should.eql('HMAC-SHA256');
             obj.clientId.should.eql('ClientA');
             obj.timestamp.should.eql('2015-11-05T08:30:24.195Z');
             obj.signature.should.eql('thesignature');

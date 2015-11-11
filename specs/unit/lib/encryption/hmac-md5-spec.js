@@ -1,5 +1,5 @@
 require('should');
-var encryptor = require('../../../../lib/encryption/md5');
+var encryptor = require('../../../../lib/encryption/hmac-md5');
 
 describe('md5 lib', function() {
 
