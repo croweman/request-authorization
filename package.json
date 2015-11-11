@@ -1,6 +1,6 @@
 {
   "name": "request-authorization",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "repository": {
     "type": "git",
     "url": "git://github.com/croweman/request-authorization.git"
@@ -18,6 +18,14 @@
     "mocha": "^2.0.1",
     "should": "^4.3.0"
   },
+  "keywords": [
+    "express",
+    "signing",
+    "requests",
+    "request",
+    "middleware",
+    "authorization"
+  ],
   "author": "Lee Crowe",
   "license": "MIT"
 }
