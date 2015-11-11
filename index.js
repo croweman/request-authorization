@@ -14,10 +14,15 @@ function generateAuthorizationHeader(options, data, timestampDate) {
 
     options = options || {};
 
+    data = data || '';
+
+    if (typeof data !== 'string') {
+        throw 'data must be a string';
+    }
+
     var scheme = findScheme(module.exports.authorizationSchemes, options.schemeName);
     var client = findClient(scheme, options.clientId);
 
-    data = data || '';
     var timestamp = generateTimestamp(scheme, timestampDate);
     data = data + timestamp;
     var signature = scheme.encrypt(data, client);
@@ -27,12 +32,17 @@ function generateAuthorizationHeader(options, data, timestampDate) {
 
 function isAuthorized(authorizationHeader, data, timestampDate) {
 
-    data = data || {};
-
     var result = {
         result: false,
         error: undefined
     };
+
+    data = data || '';
+
+    if (typeof data !== 'string') {
+        result.error = 'data must be a string';
+        return result;
+    }
 
     var parsedHeader = parser.parseAuthorizationHeader(authorizationHeader);
 

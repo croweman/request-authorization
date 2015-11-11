@@ -238,6 +238,23 @@ describe('request-authorization', function() {
 
         });
 
+        it('will fail if data is not a string', function(done) {
+
+            var options = {
+                schemeName: 'HMAC-SHA256',
+                clientId: 'clientidone'
+            };
+
+            try {
+                requestAuthorization.generateAuthorizationHeader(options, {}, new Date('2015-11-05T12:12:35.675Z'));
+            }
+            catch(ex) {
+                ex.should.eql('data must be a string');
+                done();
+            }
+
+        });
+
     });
 
     describe('isAuthorized', function() {
@@ -429,6 +446,15 @@ describe('request-authorization', function() {
             result.error.should.eql('validation window has been breached');
         });
 
+        it('returns false when data is not a valid string', function() {
+
+            var authorizationHeader = 'HMAC-SHA256 clientId=clientidone;timestamp=2015-11-05T12:12:35.675Z;signature=8+OIZQiZBqdBx5CGzVyMMfNhXPbhz2szJX2WqWrun5U=';
+
+            var result = requestAuthorization.isAuthorized(authorizationHeader, {});
+
+            result.result.should.eql(false);
+            result.error.should.eql('data must be a string');
+        });
 
     });
 
