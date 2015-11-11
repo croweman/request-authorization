@@ -1,13 +1,5 @@
 
 
-https://developer.akamai.com/introduction/Client_Auth.html time stamp iso string
-
-commit, then refactor etc
-
-maybe an example express middle ware????
-
- Authorization:EG1-HMAC-SHA256 client_token=akaa-xxxxxxxxxxxxxxxx-xxxxxxxxxxxxxxxx;
- access_token=akaa-xxxxxxxxxxxxxx-xxxxxxxxxxxxxx;timestamp=20130817T02:49:13+0000;
- nonce=dd9957e2-4fe5-48ca-8d32-16a772ac6d8f;signature=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 Populate readme
+
+add all schemes, examples of middleware everything, what header may lok like and different options

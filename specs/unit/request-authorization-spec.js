@@ -30,7 +30,7 @@ describe('request-authorization', function() {
 
             var result = nodeAuthorization.isAuthorized(authorizationHeader, data);
 
-            result.isAuthorized.should.eql(true);
+            result.result.should.eql(true);
         }
     });
 
@@ -267,7 +267,7 @@ describe('request-authorization', function() {
 
             var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
-            result.isAuthorized.should.eql(true);
+            result.result.should.eql(true);
         });
 
         it('returns true when header is valid and useTimestamp is enabled and timestamp falls within validity window', function() {
@@ -293,7 +293,7 @@ describe('request-authorization', function() {
 
             var result = requestAuthorization.isAuthorized(authorizationHeader, data, new Date('2015-11-05T12:12:37.675Z'));
 
-            result.isAuthorized.should.eql(true);
+            result.result.should.eql(true);
         });
 
         it('returns true when header is valid and useTimestamp is not enabled', function() {
@@ -318,7 +318,7 @@ describe('request-authorization', function() {
 
             var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
-            result.isAuthorized.should.eql(true);
+            result.result.should.eql(true);
         });
 
         it('returns false if scheme could not be found', function() {
@@ -328,7 +328,7 @@ describe('request-authorization', function() {
 
             var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
-            result.isAuthorized.should.eql(false)
+            result.result.should.eql(false)
             result.error.should.eql('schemeName is not valid');
         });
 
@@ -354,7 +354,7 @@ describe('request-authorization', function() {
 
             var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
-            result.isAuthorized.should.eql(false)
+            result.result.should.eql(false)
             result.error.should.eql('clientId is not valid');
         });
 
@@ -365,7 +365,7 @@ describe('request-authorization', function() {
 
             var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
-            result.isAuthorized.should.eql(false)
+            result.result.should.eql(false)
             result.error.should.eql('signature is invalid');
         });
 
@@ -376,7 +376,7 @@ describe('request-authorization', function() {
 
             var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
-            result.isAuthorized.should.eql(false)
+            result.result.should.eql(false)
             result.error.should.eql('Signatures do not match');
         });
 
@@ -387,7 +387,7 @@ describe('request-authorization', function() {
 
             var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
-            result.isAuthorized.should.eql(false)
+            result.result.should.eql(false)
             result.error.should.eql('timestamp is required');
         });
 
@@ -398,7 +398,7 @@ describe('request-authorization', function() {
 
             var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
-            result.isAuthorized.should.eql(false)
+            result.result.should.eql(false)
             result.error.should.eql('timestamp is invalid');
         });
 
@@ -425,14 +425,14 @@ describe('request-authorization', function() {
 
             var result = requestAuthorization.isAuthorized(authorizationHeader, data, new Date('2015-11-05T12:12:46.675Z'));
 
-            result.isAuthorized.should.eql(false);
+            result.result.should.eql(false);
             result.error.should.eql('validation window has been breached');
         });
 
 
     });
 
-    describe('isAuthorizedMiddleware', function() {
+    describe('authorized', function() {
 
         beforeEach(function() {
 
@@ -474,7 +474,7 @@ describe('request-authorization', function() {
             };
             req.headers['authorization'] = 'HMAC-256 clientId=clientidone;timestamp=2015-11-05T12:12:35.675Z;signature=Kk8HHaCG2hGCV+u6uk37qpIoC7GPuuu1we6xOsh7VvQ=';
 
-            requestAuthorization.isAuthorizedMiddleware(getDataFunc)(req, undefined, callback);
+            requestAuthorization.authorized(getDataFunc)(req, undefined, callback);
 
         });
 
@@ -515,7 +515,7 @@ describe('request-authorization', function() {
                 }
             }
 
-            requestAuthorization.isAuthorizedMiddleware(getDataFunc)(req, res, callback);
+            requestAuthorization.authorized(getDataFunc)(req, res, callback);
 
             status.should.eql(401)
             endCalled.should.be.true;
