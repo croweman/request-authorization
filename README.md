@@ -6,7 +6,7 @@ Node module for signing and authorizing requests.
 
 ## Usage
 
-Firstly the module will need to be initialized.
+Firstly the module will need to be initialized with schemes and there associated clients.
 
 ```js
 
@@ -27,6 +27,25 @@ var schemes = [
 
 requestAuthorization.init(schemes);
 
+```
+
+## Generate authororization header
+
+```js
+
+var options = {
+    schemeName: 'HMAC-SHA256',
+    clientId: 'clientOne'
+};
+
+var data = req.params.userId + JSON.stringify(req.body);
+var header = requestAuthorization.generateAuthorizationHeader(options, data);
+```
+
+The generated authorization header would look like the following:
+
+```js
+HMAC-SHA256 clientId=clientOne;timestamp=2015-11-11T13:41:09.430Z;signature=cCqTvX6CZDv1N00QUP1lsvzSO6SFawQHz1bTHCeBnyA=
 ```
 
 ## Installation
