@@ -14,7 +14,7 @@ var requestAuthorization = require('request-authorization');
 
 var schemes = [
     {
-        scheme: 'HMAC-256',
+        scheme: 'HMAC-SHA256',
         useTimestamp: true,
         clients: [
             {
@@ -24,7 +24,8 @@ var schemes = [
         ]
     }
 ];
-requestAuthorization.init(
+
+requestAuthorization.init(schemes);
 
 ```
 
