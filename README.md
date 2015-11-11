@@ -88,6 +88,19 @@ function getData(req) {
 }
 ```
 
+## Scheme options
+
+When initialising the module multiple schemes can be provided, each scheme can also have multiple clients each having different names and passwords for for signature generation.
+
+The schemes currently available are:
+
+- HMAC-SHA256
+- HMAC-SHA512
+- HMAC-MD5
+
+#useTimestamp
+#timestampValidationWindowInSeconds
+
 ## Mention available schemes use timestamp, and the window
 
 
