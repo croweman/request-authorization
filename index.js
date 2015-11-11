@@ -14,7 +14,7 @@ function generateAuthorizationHeader(options, data, timestampDate) {
 
     options = options || {};
 
-    var scheme = findScheme(this.authorizationSchemes, options.schemeName);
+    var scheme = findScheme(module.exports.authorizationSchemes, options.schemeName);
     var client = findClient(scheme, options.clientId);
 
     data = data || '';
