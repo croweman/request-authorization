@@ -31,6 +31,8 @@ requestAuthorization.init(schemes);
 
 ## Generate authororization header
 
+The generateAuthorizationHeader function can be used to generate authorization headers.  The function accepts an options argument and data as a string to be used for the signature.
+
 ```js
 
 var options = {
@@ -47,6 +49,28 @@ The generated authorization header would look like the following:
 ```js
 HMAC-SHA256 clientId=clientOne;timestamp=2015-11-11T13:41:09.430Z;signature=cCqTvX6CZDv1N00QUP1lsvzSO6SFawQHz1bTHCeBnyA=
 ```
+
+## isAuthorized
+
+The isAuthorized function can be used to authorize a request.  The function accepts the 'authorization' header and request data as a string.
+
+```js
+var data = "{ firstName: 'john' }";
+var authorizationHeader = 'HMAC-SHA256 clientId=clientOne;timestamp=2015-11-05T12:12:35.675Z;signature=8+OIZQiZBqdBx5CGzVyMMfNhXPbhz2szJX2WqWrun5U=';
+
+var isAuthorized = requestAuthorization.isAuthorized(authorizationHeader, data);
+
+if (isAuthorized.result) {
+    console.log('You are allowed in');
+}
+else {
+    console.log('Denied');
+}
+```
+
+
+## Mention available schemes use timestamp, and the window
+
 
 ## Installation
 
