@@ -98,8 +98,9 @@ The schemes currently available are:
 - HMAC-SHA512
 - HMAC-MD5
 
-#useTimestamp
-#timestampValidationWindowInSeconds
+### useTimestamp option
+
+### timestampValidationWindowInSeconds
 
 ## Mention available schemes use timestamp, and the window
 
