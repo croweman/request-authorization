@@ -1,11 +1,11 @@
 require('should');
-var encryptor = require('../../../../lib/encryption/hmac-md5');
+var hasher = require('../../../../lib/hashers/hmac-md5');
 
 describe('md5 lib', function() {
 
     it('correctly hashes a string', function() {
 
-        var hash = encryptor.encrypt('TheValueToEncrypt', { password: 'abcdefghi=' });
+        var hash = hasher.hash('TheValueToEncrypt', { password: 'abcdefghi=' });
 
         hash.should.eql('fH8QhkGRhHxUdmZwjCUKBw==');
 

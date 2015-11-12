@@ -40,7 +40,7 @@ describe('request-authorization', function() {
             requestAuthorization.authorizationSchemes = [];
         });
 
-        it('correctly processes encryption data', function() {
+        it('correctly processes hashers data', function() {
 
             var schemes = [
                 {
@@ -285,6 +285,9 @@ describe('request-authorization', function() {
             var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
             result.result.should.eql(true);
+            (!result.error).should.eql(true);
+            result.schemeName.should.eql('HMAC-SHA256');
+            result.clientId.should.eql('clientidone');
         });
 
         it('returns true when header is valid and useTimestamp is enabled and timestamp falls within validity window', function() {
@@ -478,7 +481,7 @@ describe('request-authorization', function() {
             requestAuthorization.init(schemes);
         });
 
-        it('should call the callback if user is authorized', function(done) {
+        it('should call the callback if user is authorized and getData function supplied', function(done) {
 
             function getDataFunc(req) {
 
@@ -486,6 +489,10 @@ describe('request-authorization', function() {
             }
 
             var callback = function() {
+                req.requestAuthorizationIsAuthorizedResult.result.should.eql(true);
+                req.requestAuthorizationIsAuthorizedResult.schemeName.should.eql('HMAC-SHA256');
+                req.requestAuthorizationIsAuthorizedResult.clientId.should.eql('clientidone');
+                (!req.requestAuthorizationIsAuthorizedResult.error).should.eql(true);
                 done();
             }
 
@@ -501,6 +508,31 @@ describe('request-authorization', function() {
             req.headers['authorization'] = 'HMAC-SHA256 clientId=clientidone;timestamp=2015-11-05T12:12:35.675Z;signature=Kk8HHaCG2hGCV+u6uk37qpIoC7GPuuu1we6xOsh7VvQ=';
 
             requestAuthorization.authorized(getDataFunc)(req, undefined, callback);
+
+        });
+
+        it('should call the callback if user is authorized and getData function is not supplied', function(done) {
+
+            var callback = function() {
+                req.requestAuthorizationIsAuthorizedResult.result.should.eql(true);
+                req.requestAuthorizationIsAuthorizedResult.schemeName.should.eql('HMAC-SHA256');
+                req.requestAuthorizationIsAuthorizedResult.clientId.should.eql('clientidone');
+                (!req.requestAuthorizationIsAuthorizedResult.error).should.eql(true);
+                done();
+            }
+
+            var req = {
+                headers: [],
+                params: {
+                    id: '123456'
+                },
+                body: {
+                    firstName: 'joe'
+                }
+            };
+            req.headers['authorization'] = 'HMAC-SHA256 clientId=clientidone;timestamp=2015-11-05T12:12:35.675Z;signature=CPWb8hCYOCwfK2bQlHKvHvCSkOC6WuQAv2+6URhsrVo=';
+
+            requestAuthorization.authorized()(req, undefined, callback);
 
         });
 
@@ -545,6 +577,12 @@ describe('request-authorization', function() {
 
             status.should.eql(401)
             endCalled.should.be.true;
+
+            req.requestAuthorizationIsAuthorizedResult.result.should.eql(false);
+            (!req.requestAuthorizationIsAuthorizedResult.schemeName).should.eql(true);
+            (!req.requestAuthorizationIsAuthorizedResult.clientId).should.eql(true);
+            req.requestAuthorizationIsAuthorizedResult.error.should.eql('schemeName is not valid');
+
             done();
         });
 

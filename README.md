@@ -62,13 +62,17 @@ var requestAuthorization = require('request-authorization');
 var data = "{ firstName: 'john' }";
 var authorizationHeader = 'HMAC-SHA256 clientId=clientOne;timestamp=2015-11-05T12:12:35.675Z;signature=8+OIZQiZBqdBx5CGzVyMMfNhXPbhz2szJX2WqWrun5U=';
 
-var isAuthorized = requestAuthorization.isAuthorized(authorizationHeader, data);
+var authorized = requestAuthorization.isAuthorized(authorizationHeader, data);
 
-if (isAuthorized.result) {
+console.log('authorization scheme name:', authorized.schemeName);
+console.log('authorization client id:', authorized.clientId);
+
+if (authorized.result) {
     console.log('You are allowed in');
 }
 else {
     console.log('Denied');
+    console.log('authorization error', authorized.error);
 }
 ```
 ## authorization
@@ -82,11 +86,21 @@ var router = express.Router();
 
 router.get('/', requestAuthorization.authorized(getData), function(req, res) {
 	res.status(200).send('You got in');
+
+	console.log(req.requestAuthorizationIsAuthorizedResult.schemeName);
+	console.log(req.requestAuthorizationIsAuthorizedResult.clientId);
+	console.log(req.requestAuthorizationIsAuthorizedResult.result);
+	console.log(req.requestAuthorizationIsAuthorizedResult.error);
 });
 
 function getData(req) {
     return req.params.id + JSON.stringify(req.body);
 }
+
+// a route could also be used that does not make use of a get data function
+router.get('/', requestAuthorization.authorized(), function(req, res) {
+	res.status(200).send('You got in');
+});
 ```
 
 ## Scheme options

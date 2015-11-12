@@ -25,7 +25,7 @@ function generateAuthorizationHeader(options, data, timestampDate) {
 
     var timestamp = generateTimestamp(scheme, timestampDate);
     data = data + timestamp;
-    var signature = scheme.encrypt(data, client);
+    var signature = scheme.hash(data, client);
 
     return scheme.scheme + " clientId=" + client.clientId + timestamp + ";signature=" + signature;
 }
@@ -34,6 +34,8 @@ function isAuthorized(authorizationHeader, data, timestampDate) {
 
     var result = {
         result: false,
+        schemeName: undefined,
+        clientId: undefined,
         error: undefined
     };
 
@@ -61,6 +63,8 @@ function isAuthorized(authorizationHeader, data, timestampDate) {
         return result;
     }
 
+    result.schemeName = scheme.scheme;
+
     var client;
 
     try {
@@ -70,6 +74,8 @@ function isAuthorized(authorizationHeader, data, timestampDate) {
         result.error = err;
         return result;
     }
+
+    result.clientId = client.clientId;
 
     if (!parsedHeader.signature || parsedHeader.signature.length == 0) {
         result.error = 'signature is invalid';
@@ -89,7 +95,7 @@ function isAuthorized(authorizationHeader, data, timestampDate) {
     var timestamp = (scheme.useTimestamp ? generateTimestamp(scheme, new Date(parsedHeader.timestamp)) : '');
     data = data + timestamp;
 
-    var signature = scheme.encrypt(data, client);
+    var signature = scheme.hash(data, client);
 
     if (parsedHeader.signature !== signature) {
         result.error = "Signatures do not match";
@@ -107,6 +113,7 @@ function isAuthorized(authorizationHeader, data, timestampDate) {
     }
 
     result.result = true;
+
     return result;
 }
 
@@ -114,9 +121,16 @@ function authorized(getDataFunc) {
 
     return function(req, res, next) {
 
-        var data = getDataFunc(req);
+        var data = '';
 
-        if (!isAuthorized(req.headers['authorization'], data).result) {
+        if (getDataFunc)
+            data = getDataFunc(req);
+
+        var result = isAuthorized(req.headers['authorization'], data);
+
+        req.requestAuthorizationIsAuthorizedResult = result;
+
+        if (!result.result) {
             res.status(401).end();
             return;
         }

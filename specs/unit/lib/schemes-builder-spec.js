@@ -5,7 +5,7 @@ describe('schemesBuilder', function() {
 
     describe('build', function() {
 
-        it('correctly processes encryption data', function() {
+        it('correctly processes hashers data', function() {
 
             var schemes = [
                 {
@@ -34,7 +34,7 @@ describe('schemesBuilder', function() {
 
         });
 
-        it('will fail if no encryption are provided', function(done) {
+        it('will fail if no hashers are provided', function(done) {
 
             try {
                 schemesBuilder.build(undefined);
@@ -65,7 +65,7 @@ describe('schemesBuilder', function() {
                 }]);
             }
             catch (err) {
-                err.should.eql("scheme name 'testScheme' is not valid for an encryptor");
+                err.should.eql("scheme name 'testScheme' is not valid for a hasher");
                 done();
             };
         });
