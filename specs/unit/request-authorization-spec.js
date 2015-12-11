@@ -51,16 +51,33 @@ describe('request-authorization', function() {
                             password: 'keyvalue'
                         }
                     ]
+                },
+                {
+                    scheme: 'RSA',
+                    useTimestamp: true,
+                    timestampValidationWindowInSeconds: 60,
+                    clients: [
+                        {
+                            clientId: 'clientidtwo',
+                            relativeOrAbsolutePathToPublicKey: './specs/unit/lib/encryptors/public.pem',
+                            relativeOrAbsolutePathToPrivateKey: './specs/unit/lib/encryptors/private.key'
+                        }
+                    ]
                 }
             ];
 
             requestAuthorization.init(schemes);
 
-            requestAuthorization.authorizationSchemes.length.should.eql(1);
+            requestAuthorization.authorizationSchemes.length.should.eql(2);
 
             requestAuthorization.authorizationSchemes[0].scheme.should.eql('HMAC-SHA256');
             requestAuthorization.authorizationSchemes[0].clients[0].clientId.should.eql('clientidone');
             requestAuthorization.authorizationSchemes[0].clients[0].password.should.eql('keyvalue');
+
+            requestAuthorization.authorizationSchemes[1].scheme.should.eql('RSA');
+            requestAuthorization.authorizationSchemes[1].clients[0].clientId.should.eql('clientidtwo');
+            requestAuthorization.authorizationSchemes[1].clients[0].relativeOrAbsolutePathToPublicKey.should.eql('./specs/unit/lib/encryptors/public.pem');
+            requestAuthorization.authorizationSchemes[1].clients[0].relativeOrAbsolutePathToPrivateKey.should.eql('./specs/unit/lib/encryptors/private.key');
 
         });
 
@@ -97,6 +114,16 @@ describe('request-authorization', function() {
                             password: 'keyvalue'
                         }
                     ]
+                },
+                {
+                    scheme: 'RSA',
+                    clients: [
+                        {
+                            clientId: 'clientidone',
+                            relativeOrAbsolutePathToPublicKey: './specs/unit/lib/encryptors/public.pem',
+                            relativeOrAbsolutePathToPrivateKey: './specs/unit/lib/encryptors/private.key'
+                        }
+                    ]
                 }
             ];
 
@@ -120,7 +147,8 @@ describe('request-authorization', function() {
         [
             { scheme: 'HMAC-SHA256', signature: 'bLlSjEAgkfFtuAlFwr/0sjx1rPGg7tq1P8KszS0zz+g=' },
             { scheme: 'HMAC-SHA512', signature: 'UaBRZz8cujFrtOxUqkRwOnu2RoYzVIpnndTga1MBCXPjQJgiiOMAkgi79HszsWtQXVFW/WHEzuemxvpIZqpW9Q==' },
-            { scheme: 'HMAC-MD5', signature: 'XSObr65DnzrAMK5vbMiBGA==' }
+            { scheme: 'HMAC-MD5', signature: 'XSObr65DnzrAMK5vbMiBGA==' },
+            { scheme: 'RSA', encryptor: true }
         ]
             .forEach(function(testCase) {
 
@@ -135,7 +163,16 @@ describe('request-authorization', function() {
 
                     var header = requestAuthorization.generateAuthorizationHeader(options, postData);
 
-                    header.should.eql(testCase.scheme + ' clientId=clientidone;signature=' + testCase.signature);
+                    var encryptor = (testCase.encryptor !== undefined && testCase.encryptor === true);
+
+                    if (!encryptor) {
+                        header.should.eql(testCase.scheme + ' clientId=clientidone;signature=' + testCase.signature);
+                    }
+                    else {
+                        var prefix = testCase.scheme + ' clientId=clientidone;signature=';
+                        header.startsWith(prefix).should.eql(true);
+                        header.length.should.be.greaterThan(prefix.length);
+                    }
                 });
 
             });
@@ -271,6 +308,16 @@ describe('request-authorization', function() {
                             password: 'keyvalue'
                         }
                     ]
+                },
+                {
+                    scheme: 'RSA',
+                    clients: [
+                        {
+                            clientId: 'clientidone',
+                            relativeOrAbsolutePathToPublicKey: './specs/unit/lib/encryptors/public.pem',
+                            relativeOrAbsolutePathToPrivateKey: './specs/unit/lib/encryptors/private.key'
+                        }
+                    ]
                 }
             ];
 
@@ -316,7 +363,7 @@ describe('request-authorization', function() {
             result.result.should.eql(true);
         });
 
-        it('returns true when header is valid and useTimestamp is not enabled', function() {
+        it('returns true when header is valid and useTimestamp is not enabled - hashing', function() {
 
             var schemes = [
                 {
@@ -335,6 +382,32 @@ describe('request-authorization', function() {
 
             var data = "{ firstName: 'john' }";
             var authorizationHeader = 'HMAC-SHA256 clientId=clientidone;signature=aizIhTj0/DYFzlYRPi7kD9A+2ArYlis2lFR3tobCqUw=';
+
+            var result = requestAuthorization.isAuthorized(authorizationHeader, data);
+
+            result.result.should.eql(true);
+        });
+
+        it('returns true when header is valid and useTimestamp is not enabled - encryption', function() {
+
+            var schemes = [
+                {
+                    scheme: 'RSA',
+                    useTimestamp: false,
+                    clients: [
+                        {
+                            clientId: 'clientidone',
+                            relativeOrAbsolutePathToPublicKey: './specs/unit/lib/encryptors/public.pem',
+                            relativeOrAbsolutePathToPrivateKey: './specs/unit/lib/encryptors/private.key'
+                        }
+                    ]
+                }
+            ];
+
+            requestAuthorization.init(schemes);
+
+            var data = "{ firstName: 'john' }";
+            var authorizationHeader = 'RSA clientId=clientidone;signature=nhWW4ZNUiTIP+FhlwKSYOuyg+4jk/gmqi6ubS6pL/X+qV2FtnneJY+WUhi8Y4fGXTJ18KN7FfK3b/oLhd2fF+GvsRMJ+2dvj8/D99hAkGWFZ+OSgQuO4PABO11X8sQYrIw0HaGGH5okWs397ujfpOHR76J2Fhfq49sOZDN29wHSJJZMooLPkgCzJA1UT43UAaZiSFAZgLMoAlTDazC69EAPTUhWvuvJtOgMiGq73evdl5my8PbKtNGqDVkcPUpwywYD4VLLgWV2M46iDGwN/7knt0R3+zmdxfrVmjnVeqy/uBrYQzS/J/x7tzsa+c7lVyKh97sLOPEWfn6t8NfO3gw==';
 
             var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
@@ -389,7 +462,7 @@ describe('request-authorization', function() {
             result.error.should.eql('signature is invalid');
         });
 
-        it('returns false if signatures do not match', function() {
+        it('returns false if signatures do not match - hashing', function() {
 
             var data = "{ firstName: 'john' }";
             var authorizationHeader = 'HMAC-SHA256 clientId=clientidone;timestamp=2015-11-05T12:12:35.675Z;signature=8+OIZQiZBqdBx5CGzVyMMfNhXPbhz2szJX2WqWrun5UA=';
@@ -398,6 +471,17 @@ describe('request-authorization', function() {
 
             result.result.should.eql(false)
             result.error.should.eql('Signatures do not match');
+        });
+
+        it('returns false if signature is invalid - encryption', function() {
+
+            var data = "{ firstName: 'john' }";
+            var authorizationHeader = 'RSA clientId=clientidone;timestamp=2015-11-05T12:12:35.675Z;signature=8+OIZQiZBqdBx5CGzVyMMfNhXPbhz2szJX2WqWrun5UA=';
+
+            var result = requestAuthorization.isAuthorized(authorizationHeader, data);
+
+            result.result.should.eql(false)
+            result.error.should.eql('decrypted data does not match data');
         });
 
         it('returns false if useTimestamp is enabled and timestamp not provided', function() {

@@ -25,7 +25,15 @@ function generateAuthorizationHeader(options, data, timestampDate) {
 
     var timestamp = generateTimestamp(scheme, timestampDate);
     data = data + timestamp;
-    var signature = scheme.hash(data, client);
+
+    var signature = '';
+
+    if (scheme.isHasher) {
+        signature = scheme.hash(data, client);
+    }
+    else {
+        signature = scheme.encrypt(data, client);
+    }
 
     return scheme.scheme + " clientId=" + client.clientId + timestamp + ";signature=" + signature;
 }
@@ -95,11 +103,22 @@ function isAuthorized(authorizationHeader, data, timestampDate) {
     var timestamp = (scheme.useTimestamp ? generateTimestamp(scheme, new Date(parsedHeader.timestamp)) : '');
     data = data + timestamp;
 
-    var signature = scheme.hash(data, client);
+    if (scheme.isHasher) {
+        var signature = scheme.hash(data, client);
 
-    if (parsedHeader.signature !== signature) {
-        result.error = "Signatures do not match";
-        return result;
+        if (parsedHeader.signature !== signature) {
+            result.error = "Signatures do not match";
+            return result;
+        }
+    }
+    else {
+
+        var decryptedData = scheme.decrypt(parsedHeader.signature, client);
+
+        if (data !== decryptedData) {
+            result.error = "decrypted data does not match data";
+            return result;
+        }
     }
 
     if (scheme.useTimestamp && typeof scheme.timestampValidationWindowInSeconds !== "undefined" && typeof scheme.timestampValidationWindowInSeconds === 'number') {
