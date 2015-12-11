@@ -5,6 +5,53 @@
 
 Node module for signing and authorizing requests.
 
+crypto.publicEncrypt(public_key, buffer)
+document how to use this!!!
+https://nodejs.org/api/crypto.html#crypto_certificate_verifyspkac_spkac
+Encrypts buffer with public_key. Only RSA is currently supported.
+
+public_key can be an object or a string. If public_key is a string, it is treated as the key with no passphrase and will use RSA_PKCS1_OAEP_PADDING. Since RSA public keys may be derived from private keys you may pass a private key to this method.
+
+public_key:
+
+key : A string holding the PEM encoded private key
+passphrase : An optional string of passphrase for the private key
+padding : An optional padding value, one of the following:
+constants.RSA_NO_PADDING
+constants.RSA_PKCS1_PADDING
+constants.RSA_PKCS1_OAEP_PADDING
+NOTE: All paddings are defined in constants module.
+
+var crypto = require("crypto");
+var path = require("path");
+var fs = require("fs");
+
+var encryptStringWithRsaPublicKey = function(toEncrypt, relativeOrAbsolutePathToPublicKey) {
+    var absolutePath = path.resolve(relativeOrAbsolutePathToPublicKey);
+    var publicKey = fs.readFileSync(absolutePath, "utf8");
+    var buffer = new Buffer(toEncrypt);
+    var encrypted = crypto.publicEncrypt(publicKey, buffer);
+    return encrypted.toString("base64");
+};
+
+var decryptStringWithRsaPrivateKey = function(toDecrypt, relativeOrAbsolutePathtoPrivateKey) {
+    var absolutePath = path.resolve(relativeOrAbsolutePathtoPrivateKey);
+    var privateKey = fs.readFileSync(absolutePath, "utf8");
+    var buffer = new Buffer(toDecrypt, "base64");
+    var decrypted = crypto.privateDecrypt(privateKey, buffer);
+    return decrypted.toString("utf8");
+    });
+};
+
+module.exports = {
+    encryptStringWithRsaPublicKey: encryptStringWithRsaPublicKey,
+    decryptStringWithRsaPrivateKey: decryptStringWithRsaPrivateKey
+}
+
+
+
+
+
 ## Usage
 
 Firstly the module will need to be initialized with schemes and there associated clients.  This only needs to be done once preferably on application start.

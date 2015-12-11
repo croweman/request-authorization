@@ -1,7 +1,7 @@
 'use strict'
 
-var schemesBuilder = require('./lib/schemes-builder');
-var parser = require('./lib/parser');
+var schemesBuilder = require('./lib/schemes-builder'),
+    parser = require('./lib/parser');
 
 this.authorizationSchemes = [];
 
