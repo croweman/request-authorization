@@ -170,7 +170,7 @@ describe('request-authorization', function() {
                     }
                     else {
                         var prefix = testCase.scheme + ' clientId=clientidone;signature=';
-                        header.startsWith(prefix).should.eql(true);
+                        header.substr(0, prefix.length).should.eql(prefix);
                         header.length.should.be.greaterThan(prefix.length);
                     }
                 });
