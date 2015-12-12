@@ -523,7 +523,7 @@ describe('schemesBuilder', function() {
                 ''
             ].forEach(function(val) {
 
-                    it('will fail if an invalid client relativeOrAbsolutePathToPublicKey is defined', function(done) {
+                    it('will fail if an invalid client relativeOrAbsolutePathToPublicKey and invalid client relativeOrAbsolutePathToPrivateKey is defined', function(done) {
 
                         var schemes = [
                             {
@@ -534,42 +534,6 @@ describe('schemesBuilder', function() {
                                     {
                                         clientId: 'clientidone',
                                         relativeOrAbsolutePathToPublicKey: val,
-                                        relativeOrAbsolutePathToPrivateKey: './specs/unit/lib/encryptors/private.key'
-                                    }
-                                ]
-                            }
-                        ];
-
-
-                        try {
-                            schemesBuilder.build(schemes);
-                        }
-                        catch (err) {
-                            err.should.eql("relativeOrAbsolutePathToPublicKey is invalid");
-                            done();
-                        };
-
-                    });
-
-                });
-
-            [
-                undefined,
-                1,
-                ''
-            ].forEach(function(val) {
-
-                    it('will fail if an invalid client relativeOrAbsolutePathToPrivateKey is defined', function(done) {
-
-                        var schemes = [
-                            {
-                                scheme: 'RSA',
-                                useTimestamp: true,
-                                timestampValidationWindowInSeconds: 60,
-                                clients: [
-                                    {
-                                        clientId: 'clientidone',
-                                        relativeOrAbsolutePathToPublicKey: './specs/unit/lib/encryptors/public.pem',
                                         relativeOrAbsolutePathToPrivateKey: val
                                     }
                                 ]
@@ -581,7 +545,7 @@ describe('schemesBuilder', function() {
                             schemesBuilder.build(schemes);
                         }
                         catch (err) {
-                            err.should.eql("relativeOrAbsolutePathToPrivateKey is invalid");
+                            err.should.eql("relativeOrAbsolutePathToPublicKey or relativeOrAbsolutePathToPrivateKey must be defined");
                             done();
                         };
 

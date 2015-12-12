@@ -1,7 +1,9 @@
 'use strict'
 
 var schemesBuilder = require('./lib/schemes-builder'),
-    parser = require('./lib/parser');
+    parser = require('./lib/parser'),
+    path = require('path'),
+    fs = require('fs');
 
 this.authorizationSchemes = [];
 
@@ -32,6 +34,12 @@ function generateAuthorizationHeader(options, data, timestampDate) {
         signature = scheme.hash(data, client);
     }
     else {
+
+        var publicKeyPathValid = (client.relativeOrAbsolutePathToPublicKey !== undefined && (typeof client.relativeOrAbsolutePathToPublicKey === "string") && client.relativeOrAbsolutePathToPublicKey.length > 0);
+
+        if (!publicKeyPathValid)
+            throw "relativeOrAbsolutePathToPublicKey is invalid";
+
         signature = scheme.encrypt(data, client);
     }
 
@@ -112,6 +120,12 @@ function isAuthorized(authorizationHeader, data, timestampDate) {
         }
     }
     else {
+        var privateKeyPathValid = (client.relativeOrAbsolutePathToPrivateKey !== undefined && (typeof client.relativeOrAbsolutePathToPrivateKey === "string") && client.relativeOrAbsolutePathToPrivateKey.length > 0);
+
+        if (!privateKeyPathValid) {
+            result.error = "relativeOrAbsolutePathToPrivateKey is invalid";
+            return result;
+        }
 
         var decryptedData = scheme.decrypt(parsedHeader.signature, client);
 
@@ -199,6 +213,23 @@ function differenceBetweenDatesInSeconds(dateOne, dateTwo) {
 
     var dif = dateOne.getTime() - dateTwo.getTime();
     return Math.abs(dif / 1000);
+}
+
+function checkFileExists(relativeOrAbsolutePath) {
+
+    var absolutePath = path.resolve(relativeOrAbsolutePath);
+
+    try
+    {
+        fs.statSync(absolutePath);
+    }
+    catch(err)
+    {
+        if(err.code == 'ENOENT')
+            return false;
+    }
+
+    return true;
 }
 
 module.exports = {

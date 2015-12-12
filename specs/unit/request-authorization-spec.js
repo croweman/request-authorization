@@ -144,6 +144,37 @@ describe('request-authorization', function() {
             header.should.eql('HMAC-SHA256 clientId=clientidone;signature=94H1WX7hHA9qjzH/yv3AgwzvRNTdudFYBCZW5BQMdGI=');
         });
 
+        it('throws a file path error if RSA scheme is being used and public key file path is invalid', function() {
+
+            var options = {
+                schemeName: 'RSA',
+                clientId: 'clientidone'
+            };
+
+            var schemes = [
+                {
+                    scheme: 'RSA',
+                    clients: [
+                        {
+                            clientId: 'clientidone',
+                            relativeOrAbsolutePathToPrivateKey: './specs/unit/lib/encryptors/private.key'
+                        }
+                    ]
+                }
+            ];
+
+            requestAuthorization.init(schemes);
+
+            var postData = '{}';
+
+            try {
+                requestAuthorization.generateAuthorizationHeader(options, postData);
+            }
+            catch (err) {
+                err.should.eql('relativeOrAbsolutePathToPublicKey is invalid')
+            }
+        });
+
         [
             { scheme: 'HMAC-SHA256', signature: 'bLlSjEAgkfFtuAlFwr/0sjx1rPGg7tq1P8KszS0zz+g=' },
             { scheme: 'HMAC-SHA512', signature: 'UaBRZz8cujFrtOxUqkRwOnu2RoYzVIpnndTga1MBCXPjQJgiiOMAkgi79HszsWtQXVFW/WHEzuemxvpIZqpW9Q==' },
@@ -176,7 +207,6 @@ describe('request-authorization', function() {
                 });
 
             });
-
 
 
         it('generates a valid authorization header when providing data and a timestamp', function() {
@@ -541,6 +571,31 @@ describe('request-authorization', function() {
 
             result.result.should.eql(false);
             result.error.should.eql('data must be a string');
+        });
+
+        it('returns false if relativeOrAbsolutePathToPrivateKey is not defined - encryption', function() {
+
+            var schemes = [
+                {
+                    scheme: 'RSA',
+                    clients: [
+                        {
+                            clientId: 'clientidone',
+                            relativeOrAbsolutePathToPublicKey: './specs/unit/lib/encryptors/public.pem'
+                        }
+                    ]
+                }
+            ];
+
+            requestAuthorization.init(schemes);
+
+            var data = "{ firstName: 'john' }";
+            var authorizationHeader = 'RSA clientId=clientidone;timestamp=2015-11-05T12:12:35.675Z;signature=8+OIZQiZBqdBx5CGzVyMMfNhXPbhz2szJX2WqWrun5UA=';
+
+            var result = requestAuthorization.isAuthorized(authorizationHeader, data);
+
+            result.result.should.eql(false)
+            result.error.should.eql('relativeOrAbsolutePathToPrivateKey is invalid');
         });
 
     });

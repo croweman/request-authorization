@@ -9,6 +9,8 @@ Node module for signing and authorizing requests.
 
 Firstly the module will need to be initialized with schemes and there associated clients.  This only needs to be done once preferably on application start.
 
+More schemes are defined below in the scheme options section.
+
 ```js
 
 var requestAuthorization = require('request-authorization');
