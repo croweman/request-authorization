@@ -70,16 +70,8 @@ HMAC-SHA256 clientId=clientOne;timestamp=2015-11-11T13:41:09.430Z;signature=cCqT
 If an alias was defined for the scheme then the alias name would be used instead of the scheme name in the generated header.
 
 ```js
-var requestAuthorization = require('request-authorization');
-
-var options = {
-    schemeName: 'HMAC-SHA256',
-    alias: 'super-alias',
-    clientId: 'clientOne'
-};
-
-super-alias clientId=clientOne;timestamp=2015-11-11T13:41:09.430Z;signature=cCqTvX6CZDv1N00QUP1lsvzSO6SFawQHz1bTHCeBnyA=
-```
+Custom-Alias-Name clientId=clientOne;timestamp=2015-11-11T13:41:09.430Z;signature=cCqTvX6CZDv1N00QUP1lsvzSO6SFawQHz1bTHCeBnyA=
+``````
 
 ## isAuthorized
 
