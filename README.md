@@ -18,7 +18,7 @@ var requestAuthorization = require('request-authorization');
 var schemes = [
     {
         scheme: 'HMAC-SHA256',
-        alias: 'scheme-one',
+        alias: 'scheme-one', // NOT REQUIRED
         useTimestamp: true,
         clients: [
             {
