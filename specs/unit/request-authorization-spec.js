@@ -267,6 +267,36 @@ describe('request-authorization', function() {
             header.should.eql('HMAC-SHA256 clientId=clientidone;signature=aizIhTj0/DYFzlYRPi7kD9A+2ArYlis2lFR3tobCqUw=');
         });
 
+        it('generates a valid authorization header when providing data and an using an alias', function() {
+
+            var schemes = [
+                {
+                    scheme: 'HMAC-SHA256',
+                    alias: 'alias-one',
+                    useTimestamp: false,
+                    clients: [
+                        {
+                            clientId: 'clientidone',
+                            password: 'keyvalue'
+                        }
+                    ]
+                }
+            ];
+
+            requestAuthorization.init(schemes);
+
+            var options = {
+                schemeName: 'HMAC-SHA256',
+                clientId: 'clientidone'
+            };
+
+            var postData = "{ firstName: 'john' }";
+
+            var header = requestAuthorization.generateAuthorizationHeader(options, postData, new Date('2015-11-05T12:12:35.675Z'));
+
+            header.should.eql('alias-one clientId=clientidone;signature=aizIhTj0/DYFzlYRPi7kD9A+2ArYlis2lFR3tobCqUw=');
+        });
+
         it('will fail if an invalid schemeName option is provided', function(done) {
 
             var options = {
@@ -331,6 +361,7 @@ describe('request-authorization', function() {
             var schemes = [
                 {
                     scheme: 'HMAC-SHA256',
+                    alias: 'alias-one',
                     useTimestamp: true,
                     clients: [
                         {
@@ -352,6 +383,19 @@ describe('request-authorization', function() {
             ];
 
             requestAuthorization.init(schemes);
+        });
+
+        it('returns true when header is valid and valid alias is defined and useTimestamp is enabled', function() {
+
+            var data = "{ firstName: 'john' }";
+            var authorizationHeader = 'alias-one clientId=clientidone;timestamp=2015-11-05T12:12:35.675Z;signature=8+OIZQiZBqdBx5CGzVyMMfNhXPbhz2szJX2WqWrun5U=';
+
+            var result = requestAuthorization.isAuthorized(authorizationHeader, data);
+
+            result.result.should.eql(true);
+            (!result.error).should.eql(true);
+            result.schemeName.should.eql('HMAC-SHA256');
+            result.clientId.should.eql('clientidone');
         });
 
         it('returns true when header is valid and useTimestamp is enabled', function() {

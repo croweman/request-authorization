@@ -43,7 +43,9 @@ function generateAuthorizationHeader(options, data, timestampDate) {
         signature = scheme.encrypt(data, client);
     }
 
-    return scheme.scheme + " clientId=" + client.clientId + timestamp + ";signature=" + signature;
+    var schemeName = (typeof scheme.alias !== 'undefined') ? scheme.alias : scheme.scheme;
+
+    return schemeName + " clientId=" + client.clientId + timestamp + ";signature=" + signature;
 }
 
 function isAuthorized(authorizationHeader, data, timestampDate) {
@@ -188,7 +190,7 @@ function generateTimestamp(scheme, timestampDate) {
 function findScheme(schemes, schemeName) {
 
     var matchingSchemes = schemes.filter(function(current) {
-        return current.scheme === schemeName;
+        return current.scheme === schemeName  || ((typeof current.alias !== 'undefined') && current.alias === schemeName);
     });
 
     if (matchingSchemes.length == 0)

@@ -10,6 +10,7 @@ describe('schemesBuilder', function() {
             var schemes = [
                 {
                     scheme: 'HMAC-SHA256',
+                    alias: 'BLAH-123',
                     useTimestamp: true,
                     timestampValidationWindowInSeconds: 60,
                     clients: [
@@ -26,6 +27,7 @@ describe('schemesBuilder', function() {
             validSchemes.length.should.eql(1);
 
             validSchemes[0].scheme.should.eql('HMAC-SHA256');
+            validSchemes[0].alias.should.eql('BLAH-123');
             validSchemes[0].useTimestamp.should.eql(true);
             validSchemes[0].timestampValidationWindowInSeconds.should.eql(60);
             validSchemes[0].clients.length.should.eql(1);
@@ -126,6 +128,30 @@ describe('schemesBuilder', function() {
                     }
                     catch (err) {
                         err.should.eql("scheme name has not been provided");
+                        done();
+                    };
+                });
+
+            });
+
+        [
+            {
+                scheme: 'HMAC-SHA256',
+                alias: ''
+            },
+            {
+                scheme: 'HMAC-SHA256',
+                alias: []
+            }
+        ].forEach(function(scheme) {
+
+                it('will fail if an invalid alias name is provided', function(done) {
+
+                    try {
+                        schemesBuilder.build([scheme]);
+                    }
+                    catch (err) {
+                        err.should.eql("invalid alias name has been provided");
                         done();
                     };
                 });

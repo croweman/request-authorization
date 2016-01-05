@@ -18,6 +18,7 @@ var requestAuthorization = require('request-authorization');
 var schemes = [
     {
         scheme: 'HMAC-SHA256',
+        alias: 'scheme-one',
         useTimestamp: true,
         clients: [
             {
@@ -64,6 +65,20 @@ The generated authorization header would look like the following:
 
 ```js
 HMAC-SHA256 clientId=clientOne;timestamp=2015-11-11T13:41:09.430Z;signature=cCqTvX6CZDv1N00QUP1lsvzSO6SFawQHz1bTHCeBnyA=
+```
+
+If an alias was defined for the scheme then the alias name would be used instead of the scheme name in the generated header.
+
+```js
+var requestAuthorization = require('request-authorization');
+
+var options = {
+    schemeName: 'HMAC-SHA256',
+    alias: 'super-alias',
+    clientId: 'clientOne'
+};
+
+super-alias clientId=clientOne;timestamp=2015-11-11T13:41:09.430Z;signature=cCqTvX6CZDv1N00QUP1lsvzSO6SFawQHz1bTHCeBnyA=
 ```
 
 ## isAuthorized
@@ -128,12 +143,20 @@ The schemes currently available are:
 - HMAC-MD5
 - RSA
 
+## alias
+
+If an alias is defined this will be used in the first part of the header.
+
+```js
+var headerExample = 'aliasName clientId=clientOne;timestamp=2015-11-11T13:41:09.430Z;signature=cCqTvX6CZDv1N00QUP1lsvzSO6SFawQHz1bTHCeBnyA='
+```
+
 ### useTimestamp
 
 If the userTimestamp option is defined and set to true the iso string date format will be used in the signature and header.
 
 ```js
-var headerExapmle = 'HMAC-SHA256 clientId=clientOne;timestamp=2015-11-11T13:41:09.430Z;signature=cCqTvX6CZDv1N00QUP1lsvzSO6SFawQHz1bTHCeBnyA='
+var headerExample = 'HMAC-SHA256 clientId=clientOne;timestamp=2015-11-11T13:41:09.430Z;signature=cCqTvX6CZDv1N00QUP1lsvzSO6SFawQHz1bTHCeBnyA='
 
 var isoFormatDate = new Date().toISOString();
 ```
@@ -148,6 +171,7 @@ var requestAuthorization = require('request-authorization');
 var schemes = [
     {
         scheme: 'HMAC-SHA256',
+        alias: 'Alias-Name', // NOT REQUIRED
         useTimestamp: true,
         timestampValidationWindowInSeconds: 60,
         clients: [
