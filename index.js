@@ -6,13 +6,18 @@ var schemesBuilder = require('./lib/schemes-builder'),
     fs = require('fs');
 
 this.authorizationSchemes = [];
+this.initialized = false;
 
 function init(schemes) {
 
     this.authorizationSchemes = schemesBuilder.build(schemes);
+    this.initialized = true;
 }
 
 function generateAuthorizationHeader(options, data, timestampDate) {
+
+    if (!module.exports.initialized)
+        throw new Error('request-authorization has not been initialized');
 
     options = options || {};
 
@@ -49,6 +54,9 @@ function generateAuthorizationHeader(options, data, timestampDate) {
 }
 
 function isAuthorized(authorizationHeader, data, timestampDate) {
+
+    if (!module.exports.initialized)
+        throw new Error('request-authorization has not been initialized');
 
     var result = {
         result: false,
@@ -154,6 +162,9 @@ function isAuthorized(authorizationHeader, data, timestampDate) {
 
 function authorized(getDataFunc) {
 
+    if (!module.exports.initialized)
+        throw new Error('request-authorization has not been initialized');
+
     return function(req, res, next) {
 
         var data = '';
@@ -217,27 +228,11 @@ function differenceBetweenDatesInSeconds(dateOne, dateTwo) {
     return Math.abs(dif / 1000);
 }
 
-function checkFileExists(relativeOrAbsolutePath) {
-
-    var absolutePath = path.resolve(relativeOrAbsolutePath);
-
-    try
-    {
-        fs.statSync(absolutePath);
-    }
-    catch(err)
-    {
-        if(err.code == 'ENOENT')
-            return false;
-    }
-
-    return true;
-}
-
 module.exports = {
     authorizationSchemes: this.authorizationSchemes,
     init: init,
     generateAuthorizationHeader: generateAuthorizationHeader,
     isAuthorized: isAuthorized,
-    authorized: authorized
+    authorized: authorized,
+    initialized: this.initialized
 };
