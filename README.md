@@ -57,7 +57,7 @@ var options = {
     clientId: 'clientOne'
 };
 
-var data = req.params.userId + JSON.stringify(req.body);
+var data = req.originalUrl + (req.body ? JSON.stringify(req.body) : '{}');
 var header = requestAuthorization.generateAuthorizationHeader(options, data);
 ```
 
@@ -115,7 +115,7 @@ router.get('/', requestAuthorization.authorized(getData), function(req, res) {
 });
 
 function getData(req) {
-    return req.params.id + JSON.stringify(req.body);
+    return req.originalUrl + (req.body ? JSON.stringify(req.body) : '{}');
 }
 
 // a route could also be used that does not make use of a get data function
