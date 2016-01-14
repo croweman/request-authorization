@@ -6,7 +6,6 @@ var schemesBuilder = require('./lib/schemes-builder'),
     fs = require('fs');
 
 this.authorizationSchemes = [];
-this.initialized = false;
 
 function init(schemes) {
 
@@ -15,9 +14,6 @@ function init(schemes) {
 }
 
 function generateAuthorizationHeader(options, data, timestampDate) {
-
-    if (!module.exports.initialized)
-        throw new Error('request-authorization has not been initialized');
 
     options = options || {};
 
@@ -54,9 +50,6 @@ function generateAuthorizationHeader(options, data, timestampDate) {
 }
 
 function isAuthorized(authorizationHeader, data, timestampDate) {
-
-    if (!module.exports.initialized)
-        throw new Error('request-authorization has not been initialized');
 
     var result = {
         result: false,
@@ -162,9 +155,6 @@ function isAuthorized(authorizationHeader, data, timestampDate) {
 
 function authorized(getDataFunc) {
 
-    if (!module.exports.initialized)
-        throw new Error('request-authorization has not been initialized');
-
     return function(req, res, next) {
 
         var data = '';
@@ -205,7 +195,7 @@ function findScheme(schemes, schemeName) {
     });
 
     if (matchingSchemes.length == 0)
-        throw "schemeName is not valid";
+        throw "schemeName is not valid, has the request-authorization.init should be called or an invalid schemeName has been used";
 
     return matchingSchemes[0];
 }
@@ -233,6 +223,5 @@ module.exports = {
     init: init,
     generateAuthorizationHeader: generateAuthorizationHeader,
     isAuthorized: isAuthorized,
-    authorized: authorized,
-    initialized: this.initialized
+    authorized: authorized
 };

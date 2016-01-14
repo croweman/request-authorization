@@ -310,7 +310,7 @@ describe('request-authorization', function() {
                 requestAuthorization.generateAuthorizationHeader(options, postData, new Date('2015-11-05T12:12:35.675Z'));
             }
             catch(ex) {
-                ex.should.eql('schemeName is not valid');
+                ex.should.eql('schemeName is not valid, has the request-authorization.init should be called or an invalid schemeName has been used');
                 done();
             }
 
@@ -496,7 +496,7 @@ describe('request-authorization', function() {
             var result = requestAuthorization.isAuthorized(authorizationHeader, data);
 
             result.result.should.eql(false)
-            result.error.should.eql('schemeName is not valid');
+            result.error.should.eql('schemeName is not valid, has the request-authorization.init should be called or an invalid schemeName has been used');
         });
 
         it('returns false if client could not be found', function() {
@@ -764,7 +764,7 @@ describe('request-authorization', function() {
             req.requestAuthorizationIsAuthorizedResult.result.should.eql(false);
             (!req.requestAuthorizationIsAuthorizedResult.schemeName).should.eql(true);
             (!req.requestAuthorizationIsAuthorizedResult.clientId).should.eql(true);
-            req.requestAuthorizationIsAuthorizedResult.error.should.eql('schemeName is not valid');
+            req.requestAuthorizationIsAuthorizedResult.error.should.eql('schemeName is not valid, has the request-authorization.init should be called or an invalid schemeName has been used');
 
             done();
         });
