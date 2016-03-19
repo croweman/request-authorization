@@ -5,9 +5,9 @@ describe('HMAC-512 lib', function() {
 
     it('correctly hashes a string', function() {
 
-        var hash = hasher.hash('TheValueToEncrypt', { password: 'abcdefghi=' });
+        var hash = hasher.hash('TheValueToEncrypt', { password: 'aGVsbG93b3JsZA==' });
 
-        hash.should.eql('rEagks0PJOO6X7ytpmqvwSJDqns8390M/BnQlO5Cjz021tirvf16u0x6bo7t9hp08GVAcxJIlfUscRJn6XgPpw==');
+        hash.should.eql('1l6xDJPmtZElZqTjogU5tFzRhQC09lanL/5vKlkoq74iGtgYk6fXzESprp4pMptjsezRIfklsbLSZ6M/mt0FPQ==');
 
     });
 })

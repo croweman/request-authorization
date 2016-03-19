@@ -5,9 +5,9 @@ describe('md5 lib', function() {
 
     it('correctly hashes a string', function() {
 
-        var hash = hasher.hash('TheValueToEncrypt', { password: 'abcdefghi=' });
+        var hash = hasher.hash('TheValueToEncrypt', { password: 'aGVsbG93b3JsZA==' });
 
-        hash.should.eql('fH8QhkGRhHxUdmZwjCUKBw==');
+        hash.should.eql('l2xHCkO4n5O3ZUQdmusgqg==');
 
     });
 })

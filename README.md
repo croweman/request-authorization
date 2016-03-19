@@ -23,7 +23,7 @@ var schemes = [
         clients: [
             {
                 clientId: 'clientOne',
-                password: 'p455w0rd'
+                password: 'aGVsbG93b3JsZA==' // base64 encoded password
             }
         ]
     },
@@ -126,7 +126,7 @@ router.get('/', requestAuthorization.authorized(), function(req, res) {
 
 ## Scheme options
 
-When initialising the module multiple schemes can be provided, each scheme can also have multiple clients each having different names, passwords, public and private keys for  signature generation.
+When initialising the module multiple schemes can be provided, each scheme can also have multiple clients each having different names, base64 encoded passwords, public and private keys for  signature generation.
 
 The schemes currently available are:
 
@@ -169,7 +169,7 @@ var schemes = [
         clients: [
             {
                 clientId: 'clientOne',
-                password: 'p455w0rd'
+                password: 'aGVsbG93b3JsZA==' // base64 encoded password
             }
         ]
     }
