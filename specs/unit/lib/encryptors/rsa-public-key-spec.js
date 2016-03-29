@@ -1,5 +1,5 @@
 require('should');
-var encryptor = require('../../../../lib/encryptors/rsa-public-key');
+var encryptor = require('../../../../lib/encryptors/rsa');
 
 describe('rsa public key lib', function() {
 

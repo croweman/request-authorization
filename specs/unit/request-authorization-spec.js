@@ -178,7 +178,7 @@ describe('request-authorization', function() {
         [
             { scheme: 'HMAC-SHA256', signature: '8L3+crNYRiafj2V2R3knjYSAUOsMrp5hShOTGh+tP/s=' },
             { scheme: 'HMAC-SHA512', signature: 'M/JeTbTtT3bo/kYAgIcZEGVeyJ9WsLj8up4Gg0QS5QtA3dauxWRMwaNuxW1+sLxi6RMOJlTpJiR70bc+5PAAQw==' },
-            { scheme: 'HMAC-MD5', signature: 'EmbRkULLV5q8dAqCsZGltg==' },
+            { scheme: 'HMAC-MD5', signature: 'W4L4v03yv7DmbMqnMG/QJA==' },
             { scheme: 'RSA', encryptor: true }
         ]
             .forEach(function(testCase) {

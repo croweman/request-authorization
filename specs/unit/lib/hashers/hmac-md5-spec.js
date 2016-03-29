@@ -7,7 +7,7 @@ describe('md5 lib', function() {
 
         var hash = hasher.hash('TheValueToEncrypt', { password: 'aGVsbG93b3JsZA==' });
 
-        hash.should.eql('l2xHCkO4n5O3ZUQdmusgqg==');
+        hash.should.eql('+2xzY7qJT7mQdgdgjn27TA==');
 
     });
 })
