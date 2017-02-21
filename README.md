@@ -38,6 +38,18 @@ var schemes = [
                 relativeOrAbsolutePathToPrivateKey: './private.key'
             }
         ]
+    },
+    {
+        scheme: 'RSA',
+        useTimestamp: true,
+        timestampValidationWindowInSeconds: 60,
+        clients: [
+            {
+                clientId: 'clientThree',
+                publicKey: process.env.PUBLIC_KEY,
+                privateKey: process.env.PRIVATE_KEY
+            }
+        ]
     }
 ];
 
