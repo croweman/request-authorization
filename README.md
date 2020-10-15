@@ -1,8 +1,5 @@
 # request-authorization
 
-[![build status](https://travis-ci.org/croweman/request-authorization.svg)](https://travis-ci.org/croweman/request-authorization) [![npm version](https://badge.fury.io/js/request-authorization.svg)](https://www.npmjs.com/package/request-authorization)
-
-
 Node module for signing and authorizing requests.
 
 ## Usage
